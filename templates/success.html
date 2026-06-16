@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - CineBook</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🎬 CineBook</div>
+            <div class="nav-links">
+                <a href="/" class="btn-link">Home</a>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="success-container">
+            <div class="success-icon">✅</div>
+            <h1>Booking Confirmed!</h1>
+            <p>Your ticket has been successfully booked.</p>
+
+            <div class="ticket-details">
+                <div class="detail-item">
+                    <label>Movie</label>
+                    <p class="detail-value">{{ movie.title }}</p>
+                </div>
+                <div class="detail-item">
+                    <label>Seats Booked</label>
+                    <p class="detail-value">
+                        {% if seats is iterable and seats is not string %}
+                            {{ seats | join(', ') }}
+                        {% else %}
+                            {{ seats }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="detail-item">
+                    <label>Genre</label>
+                    <p class="detail-value">{{ movie.genre or 'Drama' }}</p>
+                </div>
+                <div class="detail-item">
+                    <label>Booking Date</label>
+                    <p class="detail-value">Today</p>
+                </div>
+            </div>
+
+            <div class="success-actions">
+                <a href="/" class="btn-primary">Book More Tickets</a>
+                <a href="/logout" class="btn-secondary">Logout</a>
+            </div>
+
+            <p class="success-footer">A confirmation email has been sent to your registered email address.</p>
+        </div>
+    </div>
+</body>
+</html>

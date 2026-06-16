@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineBook - Movie Ticket Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🎬 CineBook</div>
+            <div class="nav-links">
+                {% if session.get('username') %}
+                    <span class="welcome">Welcome, {{ session['username'] }}!</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                {% else %}
+                    <a href="/login" class="btn-link">Login</a>
+                    <a href="/register" class="btn-link">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Book Your Movie Tickets</h1>
+            <p>Experience cinema like never before</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="movies-section">
+            <h2>Now Showing</h2>
+            {% if movies %}
+                <div class="movies-grid">
+                    {% for movie in movies %}
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            {% if movie.poster_url %}
+                                <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                            {% else %}
+                                <div class="placeholder-poster">🎥</div>
+                            {% endif %}
+                        </div>
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="genre">{{ movie.genre or 'Drama' }}</p>
+                            {% if movie.description %}
+                                <p class="description">{{ movie.description[:100] }}...</p>
+                            {% endif %}
+                            {% if session.get('username') %}
+                                <a href="/book/{{ movie.id }}" class="btn-primary">Book Now</a>
+                            {% else %}
+                                <a href="/login" class="btn-primary">Login to Book</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-movies">
+                    <p>No movies available at the moment.</p>
+                    <p style="margin-top: 10px; font-size: 14px; color: #666;">Check back soon!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 CineBook. All rights reserved.</p>
+    </footer>
+</body>
+</html>

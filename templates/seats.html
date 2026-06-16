@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Seats - CineBook</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .seat-checkbox {
+            display: none;
+        }
+        .seat-checkbox:checked + .seat-label {
+            background: #2196F3 !important;
+            border-color: #2196F3 !important;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🎬 CineBook</div>
+            <div class="nav-links">
+                <span class="welcome">{{ session['username'] }}</span>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="booking-section">
+            <div class="movie-header">
+                <h1>{{ movie.title }}</h1>
+                <p>{{ movie.genre }}</p>
+            </div>
+
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" id="booking-form">
+                <div class="seats-container">
+                    <div class="screen">🎬 SCREEN 🎬</div>
+                    <div class="seats-grid">
+                        {% for seat in seats %}
+                            {% if seat.is_booked %}
+                                <div class="seat booked" title="Booked: {{ seat.seat_number }}">
+                                    {{ seat.seat_number }}
+                                </div>
+                            {% else %}
+                                <label class="seat-wrapper">
+                                    <input type="checkbox" class="seat-checkbox" name="seat_ids" value="{{ seat.id }}" title="Available: {{ seat.seat_number }}">
+                                    <div class="seat available seat-label">
+                                        {{ seat.seat_number }}
+                                    </div>
+                                </label>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="seat available"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="seat selected"></div>
+                        <span>Selected</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="seat booked"></div>
+                        <span>Booked</span>
+                    </div>
+                </div>
+
+                <div class="seat-info">
+                    <p id="selected-count">Selected: 0 seat(s)</p>
+                </div>
+
+                <div class="booking-actions">
+                    <button type="submit" class="btn-primary" id="book-btn" disabled>Book Selected Seats</button>
+                    <a href="/" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.seat-checkbox');
+        const bookBtn = document.getElementById('book-btn');
+        const selectedCount = document.getElementById('selected-count');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelection);
+        });
+
+        function updateSelection() {
+            const selected = document.querySelectorAll('.seat-checkbox:checked').length;
+            selectedCount.textContent = `Selected: ${selected} seat(s)`;
+            bookBtn.disabled = selected === 0;
+        }
+    </script>
+</body>
+</html>

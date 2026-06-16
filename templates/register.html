@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CineBook</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🎬 CineBook</div>
+            <div class="nav-links">
+                <a href="/" class="btn-link">Home</a>
+                <a href="/login" class="btn-link">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-form">
+            <h1>Create Account</h1>
+            <p>Join CineBook to book your tickets</p>
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+            <form method="post" class="form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                </div>
+                <button type="submit" class="btn-primary">Register</button>
+            </form>
+            <p class="form-footer">Already have an account? <a href="/login">Login here</a></p>
+        </div>
+    </div>
+</body>
+</html>
